@@ -842,8 +842,10 @@ endif()
 
 add_subdirectory(opensubdiv)
 
-if (NOT ANDROID) # XXXdyu
-    add_subdirectory(regression)
+if(NOT NO_REGRESSION)
+    if (NOT ANDROID) # XXXdyu
+        add_subdirectory(regression)
+    endif()
 endif()
 
 if (NOT NO_EXAMPLES)
