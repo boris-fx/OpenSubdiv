@@ -125,23 +125,6 @@ PatchTable::~PatchTable() {
 //
 // PatchArrays
 //
-struct PatchTable::PatchArray {
-
-    PatchArray(PatchDescriptor d, int np, Index v, Index p, Index qo) :
-            desc(d), numPatches(np), vertIndex(v),
-                patchIndex(p), quadOffsetIndex (qo) { }
-
-    void print() const;
-
-    PatchDescriptor desc;  // type of patches in the array
-
-    int numPatches;        // number of patches in the array
-
-    Index vertIndex,       // index to the first control vertex
-          patchIndex,      // absolute index of the first patch in the array
-          quadOffsetIndex; // index of the first quad offset entry
-
-};
 
 // debug helper
 void
@@ -165,43 +148,6 @@ void
 PatchTable::reservePatchArrays(int numPatchArrays) {
     _patchArrays.reserve(numPatchArrays);
 }
-
-//
-// FVarPatchChannel
-//
-// Stores a record for each patch in the primitive :
-//
-//  - Each patch in the PatchTable has a corresponding patch in each
-//    face-varying patch channel. Patch vertex indices are sorted in the same
-//    patch-type order as PatchTable::PTables. Face-varying data for a patch
-//    can therefore be quickly accessed by using the patch primitive ID as
-//    index into patchValueOffsets to locate the face-varying control vertex
-//    indices.
-//
-//  - Face-varying channels can have a different interpolation modes
-//
-//  - Unlike "vertex" patches, there are no transition masks required
-//    for face-varying patches.
-//
-//  - Face-varying patches still require boundary edge masks.
-//
-//  - currently most patches with sharp boundaries but smooth interiors have
-//    to be isolated to level 10 : we need a special type of bicubic patch
-//    similar to single-crease to resolve this condition without requiring
-//    isolation if possible
-//
-struct PatchTable::FVarPatchChannel {
-
-    Sdc::Options::FVarLinearInterpolation interpolation;
-
-    PatchDescriptor regDesc;
-    PatchDescriptor irregDesc;
-
-    int stride;
-
-    std::vector<Index> patchValues;
-    std::vector<PatchParam> patchParam;
-};
 
 void
 PatchTable::allocateVaryingVertices(
@@ -682,23 +628,23 @@ PatchTable::EvaluateBasisFaceVarying(
 //
 //  Explicit instantiation of EvaluateBasis...() methods for float and double:
 //
-template void PatchTable::EvaluateBasis<float>(PatchHandle const & handle,
+template void OPENSUBDIV_API PatchTable::EvaluateBasis<float>(PatchHandle const & handle,
         float s, float t, float wP[], float wDs[], float wDt[],
         float wDss[], float wDst[], float wDtt[]) const;
-template void PatchTable::EvaluateBasisVarying<float>(PatchHandle const & handle,
+template void OPENSUBDIV_API PatchTable::EvaluateBasisVarying<float>(PatchHandle const & handle,
         float s, float t, float wP[], float wDs[], float wDt[],
         float wDss[], float wDst[], float wDtt[]) const;
-template void PatchTable::EvaluateBasisFaceVarying<float>(PatchHandle const & handle,
+template void OPENSUBDIV_API PatchTable::EvaluateBasisFaceVarying<float>(PatchHandle const & handle,
         float s, float t, float wP[], float wDs[], float wDt[],
         float wDss[], float wDst[], float wDtt[], int channel) const;
 
-template void PatchTable::EvaluateBasis<double>(PatchHandle const & handle,
+template void OPENSUBDIV_API PatchTable::EvaluateBasis<double>(PatchHandle const & handle,
         double s, double t, double wP[], double wDs[], double wDt[],
         double wDss[], double wDst[], double wDtt[]) const;
-template void PatchTable::EvaluateBasisVarying<double>(PatchHandle const & handle,
+template void OPENSUBDIV_API PatchTable::EvaluateBasisVarying<double>(PatchHandle const & handle,
         double s, double t, double wP[], double wDs[], double wDt[],
         double wDss[], double wDst[], double wDtt[]) const;
-template void PatchTable::EvaluateBasisFaceVarying<double>(PatchHandle const & handle,
+template void OPENSUBDIV_API PatchTable::EvaluateBasisFaceVarying<double>(PatchHandle const & handle,
         double s, double t, double wP[], double wDs[], double wDt[],
         double wDss[], double wDst[], double wDtt[], int channel) const;
 

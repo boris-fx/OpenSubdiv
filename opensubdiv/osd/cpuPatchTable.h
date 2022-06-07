@@ -25,6 +25,7 @@
 #ifndef OPENSUBDIV3_OSD_CPU_PATCH_TABLE_H
 #define OPENSUBDIV3_OSD_CPU_PATCH_TABLE_H
 
+#include "../exports.h"
 #include "../version.h"
 
 #include <vector>
@@ -56,7 +57,7 @@ namespace Osd {
 ///  Ideally Far::PatchTables should have the same data representation
 ///  and accessors so that we don't have to copy data unnecessarily.
 ///
-class CpuPatchTable {
+class OPENSUBDIV_API CpuPatchTable {
 public:
     static CpuPatchTable *Create(const Far::PatchTable *patchTable,
                                  void *deviceContext = NULL) {

@@ -24,6 +24,7 @@
 #ifndef OPENSUBDIV3_FAR_TOPOLOGY_REFINER_H
 #define OPENSUBDIV3_FAR_TOPOLOGY_REFINER_H
 
+#include "../exports.h"
 #include "../version.h"
 
 #include "../sdc/types.h"
@@ -48,7 +49,7 @@ template <class MESH> class TopologyRefinerFactory;
 ///
 ///  \brief Stores topology data for a specified set of refinement options.
 ///
-class TopologyRefiner {
+class OPENSUBDIV_API TopologyRefiner {
 
 public:
 

@@ -114,7 +114,7 @@ if (NOT NO_LIB)
 
     #---------------------------------------------------------------------------
 
-    install( FILES version.h
+    install( FILES version.h exports.h
         DESTINATION
             "${CMAKE_INCDIR_BASE}"
         PERMISSIONS
@@ -125,51 +125,54 @@ if (NOT NO_LIB)
     #---------------------------------------------------------------------------
 
     # Build static libs ------------------------------------
-    add_library(osd_static_cpu
-        STATIC
-        version.cpp
-        $<TARGET_OBJECTS:sdc_obj>
-        $<TARGET_OBJECTS:vtr_obj>
-        $<TARGET_OBJECTS:far_obj>
-        $<TARGET_OBJECTS:osd_cpu_obj>
-    )
-
-    set_target_properties(osd_static_cpu
-        PROPERTIES
-            OUTPUT_NAME osdCPU
-            CLEAN_DIRECT_OUTPUT 1
-            FOLDER "opensubdiv"
-    )
-
-    target_link_libraries(osd_static_cpu
-        ${PLATFORM_CPU_LIBRARIES}
-    )
-
-    install( TARGETS osd_static_cpu DESTINATION "${CMAKE_LIBDIR_BASE}" )
-
-    if( OSD_GPU )
-        # this macro uses FindCUDA.cmake to compile .cu kernel files
-        # the target then adds the other obj dependencies and include files
-        osd_add_possibly_cuda_library(osd_static_gpu "opensubdiv"
-                STATIC
-                version.cpp
-                $<TARGET_OBJECTS:osd_gpu_obj>
-                ${OPENGL_LOADER_OBJS}
-                ${CUDA_KERNEL_FILES}
-        )
-        set_target_properties(osd_static_gpu PROPERTIES OUTPUT_NAME osdGPU CLEAN_DIRECT_OUTPUT 1)
-
-        target_link_libraries(osd_static_gpu
-            ${PLATFORM_CPU_LIBRARIES} ${PLATFORM_GPU_LIBRARIES}
+    # On Windows, we build either shared or static (not both)
+    # On other platforms we always build static libs.
+    if (NOT BUILD_SHARED_LIBS OR NOT WIN32)
+        add_library(osd_static_cpu
+            STATIC
+            version.cpp
+            $<TARGET_OBJECTS:sdc_obj>
+            $<TARGET_OBJECTS:vtr_obj>
+            $<TARGET_OBJECTS:far_obj>
+            $<TARGET_OBJECTS:osd_cpu_obj>
         )
 
-        install( TARGETS osd_static_gpu DESTINATION "${CMAKE_LIBDIR_BASE}" )
+        set_target_properties(osd_static_cpu
+            PROPERTIES
+                OUTPUT_NAME osdCPU
+                CLEAN_DIRECT_OUTPUT 1
+                FOLDER "opensubdiv"
+        )
+
+        target_link_libraries(osd_static_cpu
+            ${PLATFORM_CPU_LIBRARIES}
+        )
+
+        install( TARGETS osd_static_cpu DESTINATION "${CMAKE_LIBDIR_BASE}" )
+
+        if( OSD_GPU )
+            # this macro uses FindCUDA.cmake to compile .cu kernel files
+            # the target then adds the other obj dependencies and include files
+            osd_add_possibly_cuda_library(osd_static_gpu "opensubdiv"
+                    STATIC
+                    version.cpp
+                    $<TARGET_OBJECTS:osd_gpu_obj>
+                    ${OPENGL_LOADER_OBJS}
+                    ${CUDA_KERNEL_FILES}
+            )
+            set_target_properties(osd_static_gpu PROPERTIES OUTPUT_NAME osdGPU CLEAN_DIRECT_OUTPUT 1)
+
+            target_link_libraries(osd_static_gpu
+                ${PLATFORM_CPU_LIBRARIES} ${PLATFORM_GPU_LIBRARIES}
+            )
+
+            install( TARGETS osd_static_gpu DESTINATION "${CMAKE_LIBDIR_BASE}" )
+        endif()
     endif()
 
 
     # Build dynamic libs  ----------------------------------
-    if (BUILD_SHARED_LIBS AND NOT WIN32 AND NOT IOS)
-
+    if (BUILD_SHARED_LIBS AND NOT IOS)
         # generate dynamic-link targets
 
         #---------------------------------------------------
@@ -268,6 +271,7 @@ if (NOT NO_LIB)
         endforeach(file)
 
         list(APPEND PUBLIC_HEADER_FILES "version.h")
+        list(APPEND PUBLIC_HEADER_FILES "exports.h")
 
         #static framework
         add_library(osd_static_framework

@@ -25,6 +25,7 @@
 #ifndef OPENSUBDIV3_FAR_PATCH_BUILDER_H
 #define OPENSUBDIV3_FAR_PATCH_BUILDER_H
 
+#include "../exports.h"
 #include "../version.h"
 
 #include "../sdc/types.h"
@@ -61,9 +62,9 @@ namespace Far {
 //  explicit initialization and required call to the Finalize() method that
 //  the PatchBuilder currently performs internally.
 //
-class SourcePatch {
+class OPENSUBDIV_API SourcePatch {
 public:
-    struct Corner {
+    struct OPENSUBDIV_API Corner {
         Corner() { std::memset(this, 0, sizeof(Corner)); }
 
         LocalIndex _numFaces;   // valence of corner vertex

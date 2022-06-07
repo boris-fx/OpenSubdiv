@@ -287,6 +287,10 @@ if(${SIMD} MATCHES "AVX")
     list(APPEND OSD_COMPILER_FLAGS -xAVX)
 endif()
 
+if(WIN32)
+   add_definitions(-D OPENSUBDIV_DLL_EXPORT)
+endif()
+
 add_definitions(${OSD_COMPILER_FLAGS})
 
 #-------------------------------------------------------------------------------

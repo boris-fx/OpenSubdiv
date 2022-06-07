@@ -25,6 +25,7 @@
 #ifndef OPENSUBDIV3_FAR_PATCH_TABLE_FACTORY_H
 #define OPENSUBDIV3_FAR_PATCH_TABLE_FACTORY_H
 
+#include "../exports.h"
 #include "../version.h"
 
 #include "../far/topologyRefiner.h"
@@ -37,7 +38,7 @@ namespace Far {
 
 /// \brief Factory for constructing a PatchTable from a TopologyRefiner
 ///
-class PatchTableFactory {
+class OPENSUBDIV_API PatchTableFactory {
 public:
 
     /// \brief Public options for the PatchTable factory

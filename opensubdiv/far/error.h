@@ -25,6 +25,7 @@
 #ifndef OPENSUBDIV3_FAR_ERROR_H
 #define OPENSUBDIV3_FAR_ERROR_H
 
+#include "../exports.h"
 #include "../version.h"
 
 namespace OpenSubdiv {
@@ -50,7 +51,7 @@ typedef void (*ErrorCallbackFunc)(ErrorType err, const char *message);
 ///
 /// @param func function pointer to the callback function
 ///
-void SetErrorCallback(ErrorCallbackFunc func);
+void OPENSUBDIV_API SetErrorCallback(ErrorCallbackFunc func);
 
 
 /// \brief The warning callback function type (default is "printf")
@@ -62,7 +63,7 @@ typedef void (*WarningCallbackFunc)(const char *message);
 ///
 /// @param func function pointer to the callback function
 ///
-void SetWarningCallback(WarningCallbackFunc func);
+void OPENSUBDIV_API SetWarningCallback(WarningCallbackFunc func);
 
 
 //
@@ -76,13 +77,13 @@ void SetWarningCallback(WarningCallbackFunc func);
 ///
 /// @param format  the format of the message (followed by arguments)
 ///
-void Error(ErrorType err, const char *format, ...);
+void OPENSUBDIV_API Error(ErrorType err, const char *format, ...);
 
 /// \brief Sends an OSD warning message (internal use only)
 ///
 /// @param format  the format of the message (followed by arguments)
 ///
-void Warning(const char *format, ...);
+void OPENSUBDIV_API Warning(const char *format, ...);
 
 
 } // end namespace

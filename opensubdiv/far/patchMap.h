@@ -25,6 +25,7 @@
 #ifndef OPENSUBDIV3_FAR_PATCH_MAP_H
 #define OPENSUBDIV3_FAR_PATCH_MAP_H
 
+#include "../exports.h"
 #include "../version.h"
 
 #include "../far/patchTable.h"
@@ -46,7 +47,7 @@ namespace Far {
 /// parametric location, can efficiently return a handle to the sub-patch that
 /// contains this location.
 ///
-class PatchMap {
+class OPENSUBDIV_API PatchMap {
 public:
 
     typedef PatchTable::PatchHandle Handle;

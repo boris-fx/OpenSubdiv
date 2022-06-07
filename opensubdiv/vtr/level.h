@@ -24,6 +24,12 @@
 #ifndef OPENSUBDIV3_VTR_LEVEL_H
 #define OPENSUBDIV3_VTR_LEVEL_H
 
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4251 )  // 'type' : class 'type1' needs to have dll-interface to be used by clients of class 'type2'
+#endif
+
+#include "../exports.h"
 #include "../version.h"
 
 #include "../sdc/types.h"
@@ -80,7 +86,7 @@ class FVarLevel;
 //  the face-edges here to simplify refinement.
 //
 
-class Level {
+class OPENSUBDIV_API Level {
 
 public:
     //
@@ -94,7 +100,7 @@ public:
     //  sharp -- require re-determination as sharpness values are reduced at each
     //  level.
     //
-    struct VTag {
+    struct OPENSUBDIV_API VTag {
         VTag() { }
 
         //  When cleared, the VTag ALMOST represents a smooth, regular, interior
@@ -137,7 +143,7 @@ public:
 
         static VTag BitwiseOr(VTag const vTags[], int size = 4);
     };
-    struct ETag {
+    struct OPENSUBDIV_API ETag {
         ETag() { }
 
         //  When cleared, the ETag represents a smooth, manifold, interior edge
@@ -162,7 +168,7 @@ public:
 
         static ETag BitwiseOr(ETag const eTags[], int size = 4);
     };
-    struct FTag {
+    struct OPENSUBDIV_API FTag {
         FTag() { }
 
         void clear() { std::memset(this, 0, sizeof(FTag)); }
@@ -190,7 +196,7 @@ public:
     //  indication to use the full neighborhood rather than a subset -- prefer
     //  use of the const method here to direct inspection of the member.
     //
-    struct VSpan {
+    struct OPENSUBDIV_API VSpan {
         VSpan() { std::memset(this, 0, sizeof(VSpan)); }
 
         void clear()            { std::memset(this, 0, sizeof(VSpan)); }

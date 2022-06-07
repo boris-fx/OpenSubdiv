@@ -24,6 +24,7 @@
 #ifndef OPENSUBDIV3_FAR_TOPOLOGY_REFINER_FACTORY_H
 #define OPENSUBDIV3_FAR_TOPOLOGY_REFINER_FACTORY_H
 
+#include "../exports.h"
 #include "../version.h"
 
 #include "../far/topologyRefiner.h"
@@ -44,7 +45,7 @@ namespace Far {
 /// to inherit the details related to assembly and validation provided here that are
 /// independent of the subclass' mesh type.
 //
-class TopologyRefinerFactoryBase {
+class OPENSUBDIV_API TopologyRefinerFactoryBase {
 protected:
 
     //

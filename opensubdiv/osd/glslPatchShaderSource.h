@@ -25,6 +25,7 @@
 #ifndef OPENSUBDIV3_OSD_GLSL_PATCH_SHADER_SOURCE_H
 #define OPENSUBDIV3_OSD_GLSL_PATCH_SHADER_SOURCE_H
 
+#include "../exports.h"
 #include "../version.h"
 #include <string>
 #include "../far/patchDescriptor.h"
@@ -34,7 +35,7 @@ namespace OPENSUBDIV_VERSION {
 
 namespace Osd {
 
-class GLSLPatchShaderSource {
+class OPENSUBDIV_API GLSLPatchShaderSource {
 public:
     static std::string GetCommonShaderSource();
 

@@ -25,6 +25,12 @@
 #ifndef OPENSUBDIV3_FAR_PATCH_TABLE_H
 #define OPENSUBDIV3_FAR_PATCH_TABLE_H
 
+#ifdef _MSC_VER
+#pragma warning( push )
+#pragma warning( disable: 4251 )  // 'type' : class 'type1' needs to have dll-interface to be used by clients of class 'type2'
+#endif
+
+#include "../exports.h"
 #include "../version.h"
 
 #include "../far/patchDescriptor.h"
@@ -52,12 +58,12 @@ namespace Far {
 /// XXXX manuelk we should add a PatchIterator that can dereference into
 ///              a PatchHandle for fast linear traversal of the table
 ///
-class PatchTable {
+class OPENSUBDIV_API PatchTable {
 
 public:
 
     /// \brief Handle that can be used as unique patch identifier within PatchTable
-    class PatchHandle {
+    class OPENSUBDIV_API PatchHandle {
     // XXXX manuelk members will eventually be made private
     public:
 
@@ -546,7 +552,24 @@ private:
     // Patch arrays
     //
 
-    struct PatchArray;
+   struct PatchArray {
+
+      PatchArray(PatchDescriptor d, int np, Index v, Index p, Index qo) :
+         desc(d), numPatches(np), vertIndex(v),
+         patchIndex(p), quadOffsetIndex (qo) { }
+
+      void print() const;
+
+      PatchDescriptor desc;  // type of patches in the array
+
+      int numPatches;        // number of patches in the array
+
+      Index vertIndex,       // index to the first control vertex
+         patchIndex,      // absolute index of the first patch in the array
+         quadOffsetIndex; // index of the first quad offset entry
+
+   };
+
     typedef std::vector<PatchArray> PatchArrayVector;
 
     PatchArray & getPatchArray(Index arrayIndex);
@@ -574,7 +597,43 @@ private:
     // Face-varying patch channels
     //
 
-    struct FVarPatchChannel;
+    //
+    // FVarPatchChannel
+    //
+    // Stores a record for each patch in the primitive :
+    //
+    //  - Each patch in the PatchTable has a corresponding patch in each
+    //    face-varying patch channel. Patch vertex indices are sorted in the same
+    //    patch-type order as PatchTable::PTables. Face-varying data for a patch
+    //    can therefore be quickly accessed by using the patch primitive ID as
+    //    index into patchValueOffsets to locate the face-varying control vertex
+    //    indices.
+    //
+    //  - Face-varying channels can have a different interpolation modes
+    //
+    //  - Unlike "vertex" patches, there are no transition masks required
+    //    for face-varying patches.
+    //
+    //  - Face-varying patches still require boundary edge masks.
+    //
+    //  - currently most patches with sharp boundaries but smooth interiors have
+    //    to be isolated to level 10 : we need a special type of bicubic patch
+    //    similar to single-crease to resolve this condition without requiring
+    //    isolation if possible
+    //
+    struct FVarPatchChannel {
+
+       Sdc::Options::FVarLinearInterpolation interpolation;
+
+       PatchDescriptor regDesc;
+       PatchDescriptor irregDesc;
+
+       int stride;
+
+       std::vector<Index> patchValues;
+       std::vector<PatchParam> patchParam;
+    };
+
     typedef std::vector<FVarPatchChannel> FVarPatchChannelVector;
 
     FVarPatchChannel & getFVarPatchChannel(int channel);

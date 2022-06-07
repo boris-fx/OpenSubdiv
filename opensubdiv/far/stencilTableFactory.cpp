@@ -664,11 +664,11 @@ LimitStencilTableFactoryReal<REAL>::Create(TopologyRefiner const & refiner,
 //
 //  Explicit instantiation for float and double:
 //
-template class StencilTableFactoryReal<float>;
-template class StencilTableFactoryReal<double>;
+template class OPENSUBDIV_API StencilTableFactoryReal<float>;
+template class OPENSUBDIV_API StencilTableFactoryReal<double>;
 
-template class LimitStencilTableFactoryReal<float>;
-template class LimitStencilTableFactoryReal<double>;
+template class OPENSUBDIV_API LimitStencilTableFactoryReal<float>;
+template class OPENSUBDIV_API LimitStencilTableFactoryReal<double>;
 
 
 } // end namespace Far
